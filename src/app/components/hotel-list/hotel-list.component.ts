@@ -64,7 +64,7 @@ export class HotelListComponent implements OnInit {
     this.dataFetcher.next({page: this.page, pageSize: SettingsEnum.PAGE_SIZE})
   }
 
-  @HostListener('window:scroll') // for window scroll events
+  @HostListener('window:scroll')
   onScroll() {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
       this.fetchData();
