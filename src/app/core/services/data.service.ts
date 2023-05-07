@@ -14,4 +14,14 @@ export class DataService {
     )
   }
 
+  getHotel(hotelId: string): Observable<HotelModel> {
+    return of(NotSoDatabaseService.rawData.find(data => data.id === hotelId)).pipe(
+      map(value => {
+        if (!value) {
+          throw Error(`Can't find hotel with '${hotelId}' id`);
+        }
+        return new HotelModel(value);
+      })
+    )
+  }
 }

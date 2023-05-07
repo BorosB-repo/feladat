@@ -6,6 +6,7 @@ import {SharedModule} from '../../shared/modules/shared.module';
 import {BehaviorSubject, switchMap} from 'rxjs';
 import {IFetchData} from '../../shared/interfaces/fetch-data.interface';
 import {SettingsEnum} from '../../core/enums/settings.enum';
+import {Router, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-hotel-list',
@@ -14,7 +15,8 @@ import {SettingsEnum} from '../../core/enums/settings.enum';
   standalone: true,
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   providers: [
     DataService
@@ -31,7 +33,10 @@ export class HotelListComponent implements OnInit {
       pageSize: SettingsEnum.PAGE_SIZE
     });
 
-  constructor(public dataService: DataService) {
+  constructor(
+    public dataService: DataService,
+    private readonly router: Router
+  ) {
   }
 
   ngOnInit(): void {
@@ -48,7 +53,7 @@ export class HotelListComponent implements OnInit {
         this.hotelList.push(...value);
         this.gotAllData = this.hotelList.length === SettingsEnum.MAX_DATA_AMOUNT;
       }
-    })
+    });
   }
 
   asModel(value: any): HotelModel {
@@ -69,5 +74,9 @@ export class HotelListComponent implements OnInit {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
       this.fetchData();
     }
+  }
+
+  onClickEditHotel(hotel: HotelModel): void {
+    this.router.navigate(['/hotel-editor', hotel.id]);
   }
 }

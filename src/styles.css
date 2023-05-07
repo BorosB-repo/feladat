@@ -3,4 +3,7 @@ span {
   font-family: 'Roboto', Arial, sans-serif;
   color: #d01c1c;
 }
-html { background-color: #fff3eb; }
+html {
+  background-color: #fff3eb;
+  height: 100%;
+}

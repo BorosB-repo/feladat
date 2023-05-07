@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="content">
+    <div class="pic">
+      <img src='{{hotel.pictureUrl}}'>
+    </div>
+    <div class="info">
+      <span>{{hotel.name}}</span>
+    </div>
+    <div class="form">
+      <form [formGroup]="formGroup">
+        <div class="">
+          <input formControlName="cost" type="number">
+        </div>
+        <div>
+          <input formControlName="seasonallyOpenFrom" type="date">
+        </div>
+        <div>
+          <input formControlName="seasonallyOpenTill" type="date">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="footer">
+    <button (click)="onClickBack()">Vissza</button>
+    <button (click)="onClickSave()">Mentés</button>
+  </div>
+</div>

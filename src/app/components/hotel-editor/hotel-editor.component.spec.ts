@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorComponent } from './editor.component';
+import { HotelEditorComponent } from './hotel-editor.component';
 
 describe('EditorComponent', () => {
-  let component: EditorComponent;
-  let fixture: ComponentFixture<EditorComponent>;
+  let component: HotelEditorComponent;
+  let fixture: ComponentFixture<HotelEditorComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [EditorComponent]
+      imports: [HotelEditorComponent]
     });
-    fixture = TestBed.createComponent(EditorComponent);
+    fixture = TestBed.createComponent(HotelEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

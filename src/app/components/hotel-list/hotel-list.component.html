@@ -1,7 +1,7 @@
 <table>
   <tbody>
   <tr *ngFor="let hotel of hotelList">
-    <div class="row">
+    <div class="row" (click)="onClickEditHotel(hotel)">
       <div class="picture">
         <img [src]=asModel(hotel).pictureUrl alt="no pic :(">
       </div>
