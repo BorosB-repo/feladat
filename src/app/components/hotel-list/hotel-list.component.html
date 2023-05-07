@@ -1,0 +1,26 @@
+<table>
+  <tbody>
+  <tr *ngFor="let hotel of hotelList">
+    <div class="row">
+      <div class="picture">
+        <img [src]=asModel(hotel).pictureUrl alt="no pic :(">
+      </div>
+      <div class="data-container">
+        <div class="name-cost">
+          <span class="name">{{ hotel.name }}</span>
+          <span>{{ hotel.cost | cost:' ' }}</span>
+        </div>
+        <div class="open-at">
+          <span>Szezonális nyitvatartás:</span>
+          <span class="dates">{{ asModel(hotel).seasonallyOpenFrom | date: 'YYYY.MM.dd' }}
+            - {{ asModel(hotel).seasonallyOpenTill | date: 'YYYY.MM.dd' }}</span>
+        </div>
+      </div>
+    </div>
+  </tr>
+  </tbody>
+</table>
+
+<div class="loader" *ngIf="!gotAllData">
+  <img src="./assets/pictures/loading.webp">
+</div>
