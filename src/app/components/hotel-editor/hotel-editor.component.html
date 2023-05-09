@@ -8,15 +8,21 @@
     </div>
     <div class="form">
       <form [formGroup]="formGroup">
-        <div class="">
-          <input formControlName="cost" type="number">
-        </div>
-        <div>
-          <input formControlName="seasonallyOpenFrom" type="date">
-        </div>
-        <div>
-          <input formControlName="seasonallyOpenTill" type="date">
-        </div>
+        <label>
+          <span>Ár:</span>
+          <div>
+            <input formControlName="cost" type="number">
+          </div>
+          <span *ngIf="formGroup.controls['cost'].hasError('required')" class="error-message">Kötelező kitölteni!</span>
+        </label>
+        <label>
+          <span>Szezonális nyitvatartás:</span>
+          <div>
+            <input formControlName="seasonallyOpenFrom" type="date"> -
+            <input formControlName="seasonallyOpenTill" type="date">
+          </div>
+          <span *ngIf="formGroup.hasError('dateRange')" class="error-message">A vég dátumnak későbbinek kell lennie!</span>
+        </label>
       </form>
     </div>
   </div>
