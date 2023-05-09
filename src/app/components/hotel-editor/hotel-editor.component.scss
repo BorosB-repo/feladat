@@ -1,37 +1,38 @@
-.container {
-  height: inherit;
-  display: flex;
-  flex-direction: column;
-
-  .content {
+:host {
+  .container {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    gap: 1rem;
 
-    .pic {
+    .content {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      flex: 1;
+      gap: 1rem;
 
-      img {
-        width: 200px;
-        border-radius: 5px;
+      .pic {
+        display: flex;
+        justify-content: center;
+
+        img {
+          width: 200px;
+          border-radius: 5px;
+        }
+      }
+
+      .info {
+        display: flex;
+        justify-content: center;
+      }
+
+      .form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
       }
     }
 
-    .info {
+    .footer {
       display: flex;
-      justify-content: center;
     }
-
-    .form {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  .footer {
-    display: flex;
   }
 }
