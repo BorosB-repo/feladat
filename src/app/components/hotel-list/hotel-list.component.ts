@@ -38,11 +38,6 @@ export class HotelListComponent implements OnInit {
     private readonly router: Router
   ) {
   }
-
-  ngOnInit(): void {
-    this.setDataSubscription();
-  }
-
   private setDataSubscription() {
     this.dataFetcher.pipe(
       switchMap(value => {
@@ -55,6 +50,11 @@ export class HotelListComponent implements OnInit {
       }
     });
   }
+
+  ngOnInit(): void {
+    this.setDataSubscription();
+  }
+
 
   asModel(value: any): HotelModel {
     return value as HotelModel;

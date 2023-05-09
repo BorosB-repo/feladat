@@ -40,13 +40,6 @@ export class HotelEditorComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    this.getHotel();
-    this.formGroup.addValidators(dateRangeValidator('seasonallyOpenFrom', 'seasonallyOpenTill'))
-
-    this.formGroup.valueChanges.subscribe(console.log)
-  }
-
   private getHotel() {
     const hotelId = this.route.snapshot.params['id'];
     this.dataService.getHotel(hotelId).subscribe({
@@ -55,7 +48,23 @@ export class HotelEditorComponent implements OnInit {
         this.patchValue(model);
       }
     })
+  }
 
+  private patchValue(hotel: HotelModel) {
+    this.formGroup.patchValue(hotel);
+    Object.keys(this.formGroup.controls).forEach( controlName => {
+      const control = this.formGroup.controls[controlName];
+      if (control.value instanceof Date) {
+        control.patchValue(DateHelper.dateToFormat(control.value, 'YYYY-MM-DD'))
+      }
+    })
+  }
+
+  ngOnInit(): void {
+    this.getHotel();
+    this.formGroup.addValidators(dateRangeValidator('seasonallyOpenFrom', 'seasonallyOpenTill'))
+
+    this.formGroup.valueChanges.subscribe(console.log)
   }
 
   onClickSave() {
@@ -79,13 +88,5 @@ export class HotelEditorComponent implements OnInit {
     this.router.navigate(['hotel-list']);
   }
 
-  private patchValue(hotel: HotelModel) {
-    this.formGroup.patchValue(hotel);
-    Object.keys(this.formGroup.controls).forEach( controlName => {
-      const control = this.formGroup.controls[controlName];
-      if (control.value instanceof Date) {
-        control.patchValue(DateHelper.dateToFormat(control.value, 'YYYY-MM-DD'))
-      }
-    })
-  }
+
 }
