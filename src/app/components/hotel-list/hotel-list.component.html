@@ -1,6 +1,6 @@
 <div #container class="container" (scroll)="onScroll(container)">
 
-  <div class="row" *ngFor="let hotel of hotelList">
+  <div class="row" *ngFor="let hotel of hotelList" (click)="onClickEditHotel(hotel)">
     <div class="picture">
       <img [src]=asModel(hotel).pictureUrl alt="no pic :(">
     </div>

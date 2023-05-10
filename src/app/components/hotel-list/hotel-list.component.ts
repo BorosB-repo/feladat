@@ -4,7 +4,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DataService} from '../../core/services/data.service';
+import {HotelService} from '../../core/services/hotel.service';
 import {HotelModel} from '../../shared/models/hotel.model';
 import {SharedModule} from '../../shared/modules/shared.module';
 import {BehaviorSubject, switchMap} from 'rxjs';
@@ -23,7 +23,7 @@ import {Router, RouterModule} from '@angular/router';
     RouterModule
   ],
   providers: [
-    DataService
+    HotelService
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -38,7 +38,7 @@ export class HotelListComponent implements OnInit {
     });
 
   constructor(
-    public dataService: DataService,
+    public dataService: HotelService,
     private readonly router: Router
   ) {
   }
@@ -46,7 +46,7 @@ export class HotelListComponent implements OnInit {
   private setDataSubscription() {
     this.dataFetcher.pipe(
       switchMap(value => {
-        return this.dataService.getHotelList(value.page, value.pageSize)
+        return this.dataService.getList(value.page, value.pageSize)
       })
     ).subscribe({
       next: value => {
