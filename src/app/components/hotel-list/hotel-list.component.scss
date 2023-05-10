@@ -1,55 +1,51 @@
 .container {
   width: 100%;
   height: 100%;
+  overflow: auto;
 
-  table {
-    width: 100%;
-    tr {
-        gap: 1rem;
-      .row {
-        padding: 5px;
+  .row {
+    padding: 5px;
+    display: flex;
+    border-bottom: 1px solid black;
+    border-image: linear-gradient(to right, transparent, #f90, transparent) 3;
+
+    .picture {
+      img {
+        width: 70px;
+        border-radius: 4px;
+      }
+    }
+
+    .data-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 4px;
+
+      .name-cost {
         display: flex;
-        border-bottom: 1px solid black;
-        border-image: linear-gradient(to right, transparent, #f90, transparent) 3;
+        justify-content: space-between;
+        flex: 1;
 
-        .picture {
-          img {
-            width: 70px;
-            border-radius: 4px;
-          }
-        }
-
-        .data-container {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          padding: 4px;
-
-          .name-cost {
-            display: flex;
-            justify-content: space-between;
-            flex: 1;
-
-            .name {
-              font-size: 1.2em;
-              font-weight: bold;
-              color: #3598db;
-            }
-          }
-        }
-
-        .open-at {
-          display: flex;
-          justify-content: space-between;
-
-          .dates {
-            display: flex;
-            text-align: right;
-          }
+        .name {
+          font-size: 1.2em;
+          font-weight: bold;
+          color: #3598db;
         }
       }
     }
+
+    .open-at {
+      display: flex;
+      justify-content: space-between;
+
+      .dates {
+        display: flex;
+        text-align: right;
+      }
+    }
   }
+
 
   .loader {
     width: inherit;

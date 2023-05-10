@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HotelModel} from '../../shared/models/hotel.model';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
@@ -21,7 +21,8 @@ import {dateRangeValidator} from '../../shared/validators/date-range.validator';
   styleUrls: ['./hotel-editor.component.scss'],
   providers: [
     DataService
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HotelEditorComponent implements OnInit {
   hotel: HotelModel;
@@ -62,9 +63,7 @@ export class HotelEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.getHotel();
-    this.formGroup.addValidators(dateRangeValidator('seasonallyOpenFrom', 'seasonallyOpenTill'))
-
-    this.formGroup.valueChanges.subscribe(console.log)
+    this.formGroup.addValidators(dateRangeValidator('seasonallyOpenFrom', 'seasonallyOpenTill'));
   }
 
   onClickSave() {

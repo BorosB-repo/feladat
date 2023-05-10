@@ -1,4 +1,8 @@
-import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DataService} from '../../core/services/data.service';
 import {HotelModel} from '../../shared/models/hotel.model';
@@ -38,6 +42,7 @@ export class HotelListComponent implements OnInit {
     private readonly router: Router
   ) {
   }
+
   private setDataSubscription() {
     this.dataFetcher.pipe(
       switchMap(value => {
@@ -53,8 +58,8 @@ export class HotelListComponent implements OnInit {
 
   ngOnInit(): void {
     this.setDataSubscription();
-  }
 
+  }
 
   asModel(value: any): HotelModel {
     return value as HotelModel;
@@ -69,14 +74,27 @@ export class HotelListComponent implements OnInit {
     this.dataFetcher.next({page: this.page, pageSize: SettingsEnum.PAGE_SIZE})
   }
 
-  @HostListener('window:scroll')
-  onScroll() {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  onClickEditHotel(hotel: HotelModel): void {
+    this.router.navigate(['/hotel-editor', hotel.id]);
+  }
+
+  onScroll(container: HTMLElement) {
+    const loader = container.querySelector('.loader');
+    if (!loader) {
+      return;
+    }
+
+    if (this.isElementInViewPort(loader)) {
       this.fetchData();
     }
   }
 
-  onClickEditHotel(hotel: HotelModel): void {
-    this.router.navigate(['/hotel-editor', hotel.id]);
+  private isElementInViewPort(el: Element) {
+    const rect = el.getBoundingClientRect();
+
+    return rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth);
   }
 }
