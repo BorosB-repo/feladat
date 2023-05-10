@@ -1,8 +1,8 @@
 <div #container class="container" (scroll)="onScroll(container)">
 
-  <div class="row" *ngFor="let hotel of hotelList" (click)="onClickEditHotel(hotel)">
+  <div class="row" *ngFor="let hotel of hotels$ | async" (click)="onClickEditHotel(hotel)">
     <div class="picture">
-      <img [src]=asModel(hotel).pictureUrl alt="no pic :(">
+      <img [src]=$asModel(hotel).pictureUrl alt="no pic :(">
     </div>
     <div class="data-container">
       <div class="name-cost">
@@ -11,8 +11,8 @@
       </div>
       <div class="open-at">
         <span>Szezonális nyitvatartás:</span>
-        <span class="dates">{{ asModel(hotel).seasonallyOpenFrom | date: 'YYYY.MM.dd' }}
-          - {{ asModel(hotel).seasonallyOpenTill | date: 'YYYY.MM.dd' }}</span>
+        <span class="dates">{{ $asModel(hotel).seasonallyOpenFrom | date: 'YYYY.MM.dd' }}
+          - {{ $asModel(hotel).seasonallyOpenTill | date: 'YYYY.MM.dd' }}</span>
       </div>
     </div>
   </div>

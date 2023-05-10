@@ -1,16 +1,17 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, OnDestroy,
   OnInit,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HotelService} from '../../core/services/hotel.service';
 import {HotelModel} from '../../shared/models/hotel.model';
 import {SharedModule} from '../../shared/modules/shared.module';
-import {BehaviorSubject, switchMap} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, Subject, switchMap, takeUntil, takeWhile, tap} from 'rxjs';
 import {IFetchData} from '../../shared/interfaces/fetch-data.interface';
 import {SettingsEnum} from '../../core/enums/settings.enum';
 import {Router, RouterModule} from '@angular/router';
+import {Util} from '../../shared/classes/util';
 
 @Component({
   selector: 'app-hotel-list',
@@ -27,51 +28,58 @@ import {Router, RouterModule} from '@angular/router';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HotelListComponent implements OnInit {
-  hotelList: HotelModel[] = [];
+export class HotelListComponent implements OnInit, OnDestroy {
+  hotels$: BehaviorSubject<HotelModel[]> = new BehaviorSubject<HotelModel[]>([]);
   page: number = 1;
-  gotAllData: boolean;
-  dataFetcher: BehaviorSubject<IFetchData> =
+  gotAllData: boolean = false;
+  dataFetcher$: BehaviorSubject<IFetchData> =
     new BehaviorSubject<IFetchData>({
       page: this.page,
       pageSize: SettingsEnum.PAGE_SIZE
     });
 
+  destroyed$: Subject<void> = new Subject<void>();
+
   constructor(
-    public dataService: HotelService,
-    private readonly router: Router
+    private readonly router: Router,
+    public dataService: HotelService
   ) {
   }
 
-  private setDataSubscription() {
-    this.dataFetcher.pipe(
-      switchMap(value => {
-        return this.dataService.getList(value.page, value.pageSize)
-      })
-    ).subscribe({
-      next: value => {
-        this.hotelList.push(...value);
-        this.gotAllData = this.hotelList.length === SettingsEnum.MAX_DATA_AMOUNT;
-      }
-    });
+  private loadData() {
+
+
+    this.dataFetcher$
+      .pipe(
+        takeUntil(this.destroyed$),
+        takeWhile(() => !this.gotAllData),
+        switchMap(value => this.dataService.getList(value.page, value.pageSize))
+      )
+      .subscribe(response => {
+        if (response.success && Array.isArray(response.data)) {
+          this.hotels$.next([...this.hotels$.getValue(), ...response.data])
+          this.gotAllData = this.hotels$.getValue().length === response.totalCount;
+        }
+      });
   }
 
-  ngOnInit(): void {
-    this.setDataSubscription();
-
+  ngOnInit() {
+    this.loadData();
   }
 
-  asModel(value: any): HotelModel {
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+
+  $asModel(value: any): HotelModel {
     return value as HotelModel;
   }
 
   fetchData(): void {
-    if (this.gotAllData) {
-      return;
-    }
-
     this.page += 1;
-    this.dataFetcher.next({page: this.page, pageSize: SettingsEnum.PAGE_SIZE})
+    this.dataFetcher$.next({page: this.page, pageSize: SettingsEnum.PAGE_SIZE})
   }
 
   onClickEditHotel(hotel: HotelModel): void {
@@ -84,17 +92,9 @@ export class HotelListComponent implements OnInit {
       return;
     }
 
-    if (this.isElementInViewPort(loader)) {
+    if (Util.isElementInViewPort(loader)) {
       this.fetchData();
     }
   }
 
-  private isElementInViewPort(el: Element) {
-    const rect = el.getBoundingClientRect();
-
-    return rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth);
-  }
 }

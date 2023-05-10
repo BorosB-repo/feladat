@@ -3,16 +3,23 @@ import {catchError, map, Observable, of} from 'rxjs';
 import {HotelModel} from '../../shared/models/hotel.model';
 import {NotSoDatabaseService} from './not-so-database.service';
 import {IResponse} from '../../shared/interfaces/response.interface';
+import {SettingsEnum} from '../enums/settings.enum';
 
 @Injectable()
 export class HotelService {
 
-  getList(page: number = 1, pageSize: number = 1000): Observable<HotelModel[]> {
+  getList(page: number = 1, pageSize: number = 1000): Observable<IResponse<HotelModel[]>> {
     const from = (page - 1) * pageSize;
     const limit = page * pageSize;
 
     return of(NotSoDatabaseService.rawData.slice(from, limit)).pipe(
-      map(rawData => rawData.map(data => new HotelModel(data)))
+      map(rawData => {
+        return {
+          success: true,
+          data: rawData.map(data => new HotelModel(data)),
+          totalCount: SettingsEnum.MAX_DATA_AMOUNT
+        }
+      })
     )
   }
 

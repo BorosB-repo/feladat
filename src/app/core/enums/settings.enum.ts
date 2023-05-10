@@ -1,4 +1,4 @@
 export enum SettingsEnum {
-  MAX_DATA_AMOUNT = 1000,
+  MAX_DATA_AMOUNT = 100,
   PAGE_SIZE = 50
 }

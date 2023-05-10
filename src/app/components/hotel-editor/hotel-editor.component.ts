@@ -87,5 +87,11 @@ export class HotelEditorComponent implements OnInit {
     this.router.navigate(['hotel-list']);
   }
 
-
+  onClickDelete() {
+    this.dataService.delete(this.hotel.id).subscribe(res => {
+      if (res.success) {
+        this.router.navigate(['hotel-list']);
+      }
+    })
+  }
 }
