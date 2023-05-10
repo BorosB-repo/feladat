@@ -2,7 +2,7 @@
 
   <div class="row" *ngFor="let hotel of hotels$ | async" (click)="onClickEditHotel(hotel)">
     <div class="picture">
-      <img [src]=$asModel(hotel).pictureUrl alt="no pic :(">
+      <img [src]=$asModel(hotel).pictureUrl alt="pic :)" loading="lazy">
     </div>
     <div class="data-container">
       <div class="name-cost">
